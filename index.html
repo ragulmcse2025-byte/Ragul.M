@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FocusFlow | Personal Productivity System</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand">✦ FocusFlow</div><p class="tagline">Personal Productivity System</p>
+  <div class="nav-label">WORKSPACE</div>
+  <nav class="nav">
+    <button class="active" data-page="dashboard">▦ &nbsp; Dashboard</button>
+    <button data-page="tasks">✓ &nbsp; Tasks & Goals</button>
+    <button data-page="notes">▤ &nbsp; Knowledge Notes</button>
+    <button data-page="weekly">◷ &nbsp; Weekly Review</button>
+    <button data-page="quiz">▣ &nbsp; Learning Quiz</button>
+    <button data-page="prompts">✧ &nbsp; Prompt Library</button>
+    <button data-page="trial">⌁ &nbsp; Trial Log</button>
+    <button data-page="automation">⚙ &nbsp; Automation</button>
+    <button data-page="verification">✓ &nbsp; AI Verification</button>
+  </nav>
+  <div class="nav-label">ABOUT</div>
+  <p style="font-size:12px;color:#aab7ce;padding:0 10px">A student-friendly space to plan, learn, connect ideas and review progress.</p>
+</aside>
+<main class="main">
+<header class="top"><div><div class="eyebrow">Your personal workspace</div><h1 id="pageTitle">Good day, learner 👋</h1><div class="muted">Small steps, consistent progress.</div></div><div class="date" id="today"></div></header>
+
+<section id="dashboard" class="section active">
+ <div class="grid stats">
+  <div class="card"><div class="stat-label">Open tasks</div><div class="stat-value" id="statTasks">0</div><div class="stat-foot">Things to focus on</div></div>
+  <div class="card"><div class="stat-label">Completed tasks</div><div class="stat-value" id="statDone">0</div><div class="stat-foot">Progress made</div></div>
+  <div class="card"><div class="stat-label">Knowledge notes</div><div class="stat-value" id="statNotes">0</div><div class="stat-foot">Ideas worth keeping</div></div>
+  <div class="card"><div class="stat-label">Trial entries</div><div class="stat-value" id="statTrials">0</div><div class="stat-foot">Your 2-week experiment</div></div>
+ </div>
+ <div class="grid two">
+  <div class="card"><div class="row"><h2>Today's focus</h2><button class="small" onclick="showPage('tasks')">+ Add task</button></div><div id="dashTasks" class="stack"></div></div>
+  <div class="card"><h2>Weekly progress</h2><div class="stat-value" id="progressText">0%</div><div class="progress"><span id="progressBar" style="width:0%"></span></div><p class="muted" style="font-size:13px">Completion rate across your tasks.</p><h3 style="margin-top:22px">Quick start</h3><div class="actions"><button class="secondary small" onclick="showPage('notes')">Write a note</button><button class="secondary small" onclick="showPage('weekly')">Review week</button><button class="secondary small" onclick="showPage('quiz')">Take quiz</button></div></div>
+ </div>
+ <div class="card" style="margin-top:18px"><h2>How this system works</h2><div class="grid three"><div><span class="pill">1 · Capture</span><p class="muted">Save tasks, goals and useful ideas.</p></div><div><span class="pill green">2 · Connect</span><p class="muted">Link related notes and build knowledge.</p></div><div><span class="pill orange">3 · Review</span><p class="muted">Reflect weekly and improve your habits.</p></div></div></div>
+</section>
+
+<section id="tasks" class="section">
+ <div class="card"><h2>Add a task or goal</h2><form id="taskForm" class="form two-col"><input class="field" id="taskName" placeholder="Task name" required><select class="field" id="taskPriority"><option>Medium</option><option>High</option><option>Low</option></select><input class="field" id="taskDue" type="date"><select class="field" id="taskCategory"><option>Study</option><option>Project</option><option>Personal</option><option>Career</option></select><button class="wide">Add task</button></form></div>
+ <div class="card" style="margin-top:18px"><div class="row"><h2>Your task list</h2><span class="pill" id="taskCount">0 tasks</span></div><div id="taskList" class="stack"></div></div>
+</section>
+
+<section id="notes" class="section">
+ <div class="grid two">
+  <div class="card"><h2>Create a knowledge note</h2><form id="noteForm" class="form"><input class="field" id="noteTitle" placeholder="Note title" required><select class="field" id="noteSubject"><option>Computer Science</option><option>Personal Development</option><option>Career</option><option>Other</option></select><textarea class="field" id="noteBody" placeholder="Write the key idea in your own words..." required></textarea><input class="field" id="noteLink" placeholder="Related note title (optional)"><button>Save note</button></form><p class="muted" style="font-size:12px">Tip: Use one idea per note. Link related concepts by writing the related note title.</p></div>
+  <div class="card"><h2>Saved notes</h2><div id="noteList" class="stack"></div></div>
+ </div>
+</section>
+
+<section id="weekly" class="section">
+ <div class="card"><h2>Weekly review checklist</h2><p class="muted">Use this once a week to understand what worked and what needs attention.</p><div id="reviewChecks"></div><div class="form"><textarea id="reviewWins" class="field" placeholder="What went well this week?"></textarea><textarea id="reviewImprove" class="field" placeholder="What can I improve next week?"></textarea><textarea id="reviewNext" class="field" placeholder="Top 3 priorities for next week..."></textarea><button onclick="saveReview()">Save weekly review</button></div><div id="reviewHistory" class="stack"></div></div>
+</section>
+
+<section id="quiz" class="section">
+ <div class="card"><div class="row"><h2>Knowledge check</h2><span class="pill">10 questions</span></div><p class="muted">A short quiz about productivity and knowledge management.</p><div id="quizArea"></div><div class="actions"><button onclick="submitQuiz()">Check answers</button><button class="secondary" onclick="resetQuiz()">Try again</button></div><p id="quizResult" class="muted"></p></div>
+</section>
+
+<section id="prompts" class="section">
+ <div class="grid two"><div class="card"><h2>Prompt library</h2><form id="promptForm" class="form"><input id="promptTitle" class="field" placeholder="Prompt name" required><select id="promptType" class="field"><option>Study</option><option>Planning</option><option>Research</option><option>Writing</option><option>Review</option></select><textarea id="promptText" class="field" placeholder="Write your reusable AI prompt..." required></textarea><button>Save prompt</button></form></div><div class="card"><h2>Saved prompts</h2><div id="promptList" class="stack"></div></div></div>
+</section>
+
+<section id="trial" class="section">
+ <div class="card"><h2>2-week trial log</h2><p class="muted">Record how the system helps you. Keep the reflection honest.</p><form id="trialForm" class="form two-col"><input class="field" type="date" id="trialDate" required><select class="field" id="trialRating"><option value="5">5 - Very helpful</option><option value="4">4 - Helpful</option><option value="3">3 - Okay</option><option value="2">2 - Not very helpful</option><option value="1">1 - Not helpful</option></select><textarea class="field wide" id="trialWhat" placeholder="What did you use today? What worked?"></textarea><textarea class="field wide" id="trialProblem" placeholder="Any problem or distraction?"></textarea><button class="wide">Add trial entry</button></form><div id="trialList" class="stack"></div></div>
+</section>
+
+<section id="automation" class="section">
+ <div class="card"><h2>Weekly review automation</h2><p class="muted">Generate a weekly summary from your saved task list. This demo runs inside your browser; it does not send emails or connect to Notion automatically.</p><div class="actions"><button onclick="generateSummary()">Generate weekly summary</button><button class="secondary" onclick="copySummary()">Copy summary</button></div><textarea id="automationOutput" class="field" style="margin-top:15px;min-height:220px" placeholder="Your generated summary will appear here..."></textarea></div>
+ <div class="card" style="margin-top:18px"><h2>Future integration plan</h2><ul class="muted"><li>Notion API: sync tasks and pages after secure API setup.</li><li>Obsidian: store linked Markdown notes in a local vault.</li><li>Scheduled automation: use an approved automation service to run weekly.</li></ul></div>
+</section>
+
+<section id="verification" class="section">
+ <div class="card"><h2>Responsible AI verification checklist</h2><p class="muted">Check AI-generated information before using it in assignments or decisions.</p><div id="verifyChecks"></div><div class="form"><textarea id="verifyNotes" class="field" placeholder="Record the source checked, date, and any corrections..."></textarea><button onclick="saveVerification()">Save verification record</button></div><div id="verifyHistory" class="stack"></div></div>
+</section>
+
+<div class="footer">FocusFlow · Capstone 59 · Personal Productivity System with Notion and Obsidian<br>Demo data is stored in this browser using local storage.</div>
+</main>
+</div>
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
